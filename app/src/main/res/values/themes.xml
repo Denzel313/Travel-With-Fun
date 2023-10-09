@@ -5,5 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <color name="orange">#FE6900</color>
+    <color name="blue">#3AA3A5</color>
+
     <style name="Theme.TravelWithFun" parent="Base.Theme.TravelWithFun" />
 </resources>
