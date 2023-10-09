@@ -7,6 +7,18 @@
 
     <color name="orange">#FE6900</color>
     <color name="blue">#3AA3A5</color>
+    <color name="grey">#A5A5A5</color>
+
+    <style name="Intro">
+        <!--The Background-->
+        <item name="windowSplashScreenIconBackgroundColor">@color/grey</item>
+        <!--The Logo-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+        <!--The Duration-->
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <!--The Original Theme after Splash Screen Ends-->
+        <item name="postSplashScreenTheme">Base.Theme.TravelWithFun</item>
+    </style>
 
     <style name="Theme.TravelWithFun" parent="Base.Theme.TravelWithFun" />
 </resources>
