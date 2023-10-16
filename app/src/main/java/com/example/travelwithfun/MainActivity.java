@@ -3,26 +3,33 @@ package com.example.travelwithfun;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.example.travelwithfun.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView
-        .OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity {
 
     boolean isAndroidReady = false;
-    BottomNavigationView bottomNavigationView;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //handle splash screen transition
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-
         //keep splashscreen for a long time
         View content = findViewById(android.R.id.content);
         //add the pre draw listener to the tree view observer
@@ -40,48 +47,43 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        bottomNavigationView
-                = findViewById(R.id.bottomNavigationView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.BLACK);
+        }
 
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.person);
+        //Bottom Nav
+        replaceFragment(new FirstFragment());
+        binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int menuItemId = item.getItemId();
+
+                if (menuItemId == R.id.person) {
+                    replaceFragment(new FirstFragment());
+                    return true;
+                } else if (menuItemId == R.id.home) {
+                    replaceFragment(new SecondFragment());
+                    return true;
+                } else if (menuItemId == R.id.settings) {
+                    replaceFragment(new ThirdFragment());
+                    return true;
+                }
+                return true;
+            }
+        });
 
     }
 
-    FirstFragment firstFragment = new FirstFragment();
-    SecondFragment secondFragment = new SecondFragment();
-    ThirdFragment thirdFragment = new ThirdFragment();
-
-    public boolean
-    onNavigationItemSelected(@NonNull MenuItem item)
-    {
-
-        switch (item.getItemId()) {
-            case R.id.person:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment, firstFragment)
-                        .commit();
-                return true;
-
-            case R.id.home:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment, secondFragment)
-                        .commit();
-                return true;
-
-            case R.id.settings:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flFragment, thirdFragment)
-                        .commit();
-                return true;
-        }
-        return false;
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flFragment, fragment);
+        transaction.commit();
     }
 
     private void dismissSplashScreen() {
