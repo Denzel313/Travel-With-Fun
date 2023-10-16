@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SplashTheme" parent="Theme.SplashScreen">
+        //set the splash screen background color
+        <item name="windowSplashScreenBackground">#6B6B6B</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+<!--        <item name="windowSplashScreenAnimationDuration">2000</item>-->
+
+        //set theme 
+        <item name="postSplashScreenTheme">@style/Theme.TravelWithFun</item>
+    </style>
+</resources>
